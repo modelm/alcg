@@ -1,0 +1,17 @@
+{
+  "name": "alcg",
+  "version": "1.0.0",
+  "description": "",
+  "main": "alcg.js",
+  "dependencies": {
+    "backbone": "^1.3.3",
+    "dice": "0.0.2",
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

@@ -126,7 +126,7 @@ var Character = Backbone.Model.extend({
 });
 
 http.createServer(function(req, res) {
-       console.log(new Character);
-       res.write('hi');
+       var c = new Character;
+       res.write(JSON.stringify(c, null, 4));
        res.end();
 }).listen(process.env.PORT || 5000);

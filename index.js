@@ -1,5 +1,4 @@
-#! /usr/bin/env node
-
+var http = require('http');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var Dice = require('dice');
@@ -126,4 +125,7 @@ var Character = Backbone.Model.extend({
        }
 });
 
-console.log(new Character);
+http.createServer(function(req, res) {
+       res.writeBody(new Character);
+       console.log(new Character);
+}).listen('5000');

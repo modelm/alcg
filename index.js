@@ -77,6 +77,8 @@ var Character = Backbone.Model.extend({
 
 			// detailed appearance
 			(function() {
+				console.log('determining appearance');
+
 				var features = data.characteristics.distinguishing_features;
 				var formulas = data.characteristics.race[instance.get('race')];
 				var changes = {
@@ -115,7 +117,6 @@ var Character = Backbone.Model.extend({
 					}
 				};
 
-				console.log('determining appearance');
 				roll();
 				return instance.set(changes);
 			})();

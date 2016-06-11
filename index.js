@@ -50,7 +50,8 @@ var Character = Backbone.Model.extend({
 			})();
 
 			var racial_adjustments = (function() {
-				var formulas = { /* str   end   agi   pre   int   wis   per   cha */
+				var formulas = {
+					//              str   end   agi   pre   int   wis   per   cha
 					'human':     [ '-0', '-0', '-0', '-0', '-0', '-0', '-0', '-0' ],
 					'ais\'lun':  [ '-0', '+2', '-2', '-0', '-1', '+1', '+2', '-0' ],
 					'viantu':    [ '-2', '-1', '+2', '+2', '+1', '-0', '-0', '-0' ],

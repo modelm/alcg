@@ -32,8 +32,6 @@ var Character = Backbone.Model.extend({
 
 		// characteristics
 		var step2 = (function(){
-			console.log('determining characteristics');
-
 			var race = (function() {
 				var races = [
 					'human',
@@ -157,9 +155,144 @@ var Character = Backbone.Model.extend({
 				});
 			})();
 
+			var distinguishing_features = (function() {
+				var features = [
+					'Deep scar across left cheek',
+					'Birthmark in prominent location',
+					'Upturned nose',
+					'Cleft palate/cleft lip',
+					'Lazy eye',
+					'Pierced lip or stretched lip plate',
+					'Walks on edges or balls of feet',
+					'Extremely hirsute',
+					'Freckled skin/skin spots',
+					'Striking, patterned face paint',
+					'Dwarfism (adjust height/weight accordingly)',
+					'Excessive and/or intense blinking',
+					'Ocular heterochromia',
+					'Frequent habitual coughing',
+					'Mumbles and/or trails off at the end of speech',
+					'Deep pock marks in face and skin',
+					'Ragged scar diagonally across entire face',
+					'Always repeats the last word others speak',
+					'Cauliflower ear/torn ear',
+					'Very large hands',
+					'Symmetrical scars across both cheeks',
+					'Webbed fingers and/or toes',
+					'Abnormally tall (height +20 inches)',
+					'Speaks with an unusually low-pitched voice',
+					'Roll 2 features here (cumulative)',
+					'Speaks with an unusually high-pitched voice',
+					'Burn scars on face and/or shoulder',
+					'Extra digit on hands and/or feet',
+					'An asynchronous gait',
+					'Wide neck and/or sloped shoulders',
+					'Appears much older than actual age',
+					'Concave or sunken patch of skin',
+					'Dyed hair and/or fur',
+					'Missing several teeth',
+					'Geometric scarification on body and/or face',
+					'Blemished or bumpy skin',
+					'Pronounced overbite',
+					'Habitually sways back and forth',
+					'Incredibly small, rounded ears',
+					'Missing two fingers from right hand',
+					'Shaved eyebrows',
+					'Impeccable poise and/or clear-headedness',
+					'Very short arms and/or legs',
+					'Very long arms and/or legs',
+					'An odd, but not displeasing smell',
+					'Whip scars across back',
+					'One eye appears higher than the other',
+					'Cracks knuckles and/or neck frequently',
+					'Pronounced double chin',
+					'Remarkably indistinct (no distinguishing features)',
+					'Ritually tattooed body',
+					'Vitiligo',
+					'Missing two fingers from left hand',
+					'Darkened, raised moles on face and/or body',
+					'Shockingly narrow shoulders',
+					'Abnormally short (height -20 inches)',
+					'Four clearly visible scars from stab wounds',
+					'Deeply curved spine',
+					'Pronounced underbite',
+					'Shaved head',
+					'Ritual or symbolic branding on arms/legs',
+					'Deep scar across right cheek',
+					'Incredibly large, elongated ears',
+					'Pronounced albinism',
+					'Noticeably upright posture',
+					'Tall warts on face and neck',
+					'Stretched ear piercings',
+					'Nearly hairless with translucent skin',
+					'Clouded/scarred/damaged right eye',
+					'Burn scars on arms and/or body',
+					'A habit of staring',
+					'Large and/or bulbous nose',
+					'Very large, gapped teeth',
+					'Pointed, jutting chin',
+					'Roll 2 features here (cumulative)',
+					'Remarkably wide-set facial features',
+					'Pierced septum with elaborate jewelry',
+					'Patchy baldness',
+					'Stands in close proximity to others while talking',
+					'Split tongue',
+					'Mutters or vocalizes to self',
+					'Broken nose that healed in a misshapen way',
+					'Scars from an animal bite',
+					'Clouded/scarred/damaged left eye',
+					'Very small hands',
+					'Missing one ear',
+					'Multiple ear piercings (at least eight)',
+					'Nose frequently makes whistling sound',
+					'Noticeably dry, cracked, or scaly skin',
+					'Frequently squints and/or furrows brow',
+					'Teeth filed to points',
+					'Pierced nasal bridge',
+					'Unusual, strangely colored eyes',
+					'Ritually tattooed face',
+					'Matted or dreaded hair and/or fur',
+					'Beady eyes',
+					'Remarkably close-set facial features',
+					'Colored nails',
+					'Habitually touches head',
+					'Roll 3 features here (cumulative)'
+				];
+				var feature_count = 1;
+				var changes = {distinguishing_features: []};
+				var roll = function() {
+					var result = instance._roll('1d100');
+					var feature = features[result - 1];
+
+					if (result === 75) {
+						feature_count += 2;
+						return roll();
+					}
+
+					if (result === 100) {
+						feature_count += 3;
+						return roll();
+					}
+
+					if (_.contains(changes['distinguishing_features'], feature)) {
+						return roll();
+					}
+
+					changes['distinguishing_features'].push(feature);
+
+					if (changes['distinguishing_features'].length < feature_count) {
+						return roll();
+					}
+				}
+
+				console.log('distinguishing features');
+
+				roll();
+
+				instance.set(changes);
+			})();
 		})();
 
-		// TODO left off at "Distinguishing Features"
 	},
 
 	/**

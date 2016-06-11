@@ -145,17 +145,6 @@ var Character = Backbone.Model.extend({
 						base_age: '1d10+15'
 					}
 				};
-
-				console.log('determining appearance');
-
-				return instance.set({
-					height:   instance._roll(formulas[instance.get('race')].height),
-					weight:   instance._roll(formulas[instance.get('race')].weight),
-					base_age: instance._roll(formulas[instance.get('race')].base_age)
-				});
-			})();
-
-			var distinguishing_features = (function() {
 				var features = [
 					'Deep scar across left cheek',
 					'Birthmark in prominent location',
@@ -258,38 +247,43 @@ var Character = Backbone.Model.extend({
 					'Habitually touches head',
 					'Roll 3 features here (cumulative)'
 				];
-				var feature_count = 1;
-				var changes = {distinguishing_features: []};
-				var roll = function() {
+				var changes = {
+					height:   instance._roll(formulas[instance.get('race')].height),
+					weight:   instance._roll(formulas[instance.get('race')].weight),
+					base_age: instance._roll(formulas[instance.get('race')].base_age),
+					distinguishing_features: []
+				};
+				var feature_roll = function() {
 					var result = instance._roll('1d100');
 					var feature = features[result - 1];
 
 					if (result === 75) {
 						feature_count += 2;
-						return roll();
+						return feature_roll();
 					}
 
 					if (result === 100) {
 						feature_count += 3;
-						return roll();
+						return feature_roll();
 					}
 
 					if (_.contains(changes['distinguishing_features'], feature)) {
-						return roll();
+						return feature_roll();
 					}
 
 					changes['distinguishing_features'].push(feature);
 
 					if (changes['distinguishing_features'].length < feature_count) {
-						return roll();
+						return feature_roll();
 					}
 				}
+				var feature_count = 1;
 
-				console.log('distinguishing features');
+				feature_roll();
 
-				roll();
+				console.log('determining appearance');
 
-				instance.set(changes);
+				return instance.set(changes);
 			})();
 		})();
 

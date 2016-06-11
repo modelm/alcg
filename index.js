@@ -181,8 +181,21 @@ var Character = Backbone.Model.extend({
 	}
 });
 
+//console.log(new Character);
+
 http.createServer(function(req, res) {
-       var c = new Character;
-       res.write(JSON.stringify(c, null, 4));
-       res.end();
+	console.log = function(msg) {
+		if (typeof msg === 'object') {
+			msg = JSON.stringify(msg, null, 4);
+		}
+		return res.write(msg + "\n");
+	}
+
+	var c = new Character;
+
+	console.log('final stats');
+
+	console.log(c);
+
+	res.end();
 }).listen(process.env.PORT || 5000);

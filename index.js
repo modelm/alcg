@@ -1,4 +1,5 @@
 var http = require('http');
+var fs = require('fs');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var Dice = require('dice');
@@ -7,86 +8,47 @@ var Character = Backbone.Model.extend({
 	initialize: function() {
 		var instance = this;
 
-		// attributes
-		var step1 = (function() {
-			var attributes = [
-				'strength',
-				'endurance',
-				'agility',
-				'precision',
-				'intelligence',
-				'wisdom',
-				'perception',
-				'charisma'
-			];
+		var data = JSON.parse(fs.readFileSync(__dirname + '/data.json'));
+
+		// step one: generate attributes
+		(function() {
 			var changes = {};
 
-			_.each(attributes, function(attribute) {
+			console.log('generating attributes');
+
+			_.each(data.attributes, function(attribute) {
 				changes[attribute] = instance._roll('3d6');
 			});
-
-			console.log('generating attributes');
 
 			instance.set(changes);
 		})();
 
-		// characteristics
-		var step2 = (function(){
-			var race = (function() {
-				var races = [
-					'human',
-					'ais\'lun',
-					'viantu',
-					'djenndan',
-					'kahlnissá',
-					'pulnagá'
-				];
-
-				var result = instance._roll('1d6');
-
+		// step two: determine characteristics
+		(function() {
+			// race
+			(function() {
+				var races = Object.keys(data.characteristics.race);
 				console.log('determining race');
-
-				return instance.set({race: races[result - 1]});
+				instance.set({race: races[instance._roll('1d' + races.length) - 1]});
 			})();
 
-			var racial_adjustments = (function() {
-				var formulas = {
-					//              str   end   agi   pre   int   wis   per   cha
-					'human':     [ '-0', '-0', '-0', '-0', '-0', '-0', '-0', '-0' ],
-					'ais\'lun':  [ '-0', '+2', '-2', '-0', '-1', '+1', '+2', '-0' ],
-					'viantu':    [ '-2', '-1', '+2', '+2', '+1', '-0', '-0', '-0' ],
-					'djenndan':  [ '+2', '+2', '-1', '-2', '-0', '-0', '+1', '-0' ],
-					'kahlnissá': [ '-1', '-2', '+2', '-0', '+2', '-0', '+1', '-0' ],
-					'pulnagá':   [ '-0', '-0', '+1', '+1', '+1', '-1', '-1', '-0' ]
-				};
-				var attributes = [
-					'strength',
-					'endurance',
-					'agility',
-					'precision',
-					'intelligence',
-					'wisdom',
-					'perception',
-					'charisma'
-				];
-				var changes = {};
-
-				_.each(attributes, function(attribute, key) {
-					var adjustment = formulas[instance.get('race')][key];
-
+			// attribute adjustments
+			(function() {
+				var adjustments = data.characteristics.race[instance.get('race')].attribute_adjustments;
+				var callback = function(adjustment, attribute) {
 					if ( adjustment !== '-0' ) {
 						changes[attribute] = eval(instance.get(attribute) + adjustment);
 					}
-				});
+				};
+				var changes = {};
 
-				console.log('applying racial adjustments');
-
+				console.log('applying racial attribute adjustments');
+				_.each(adjustments, callback);
 				return instance.set(changes);
 			})();
 
-			var sex = (function() {
-				var is_reroll = false;
-
+			// sex
+			(function() {
 				var roll = function() {
 					var result = instance._roll('1d8');
 
@@ -107,187 +69,76 @@ var Character = Backbone.Model.extend({
 						}
 					}
 				};
+				var is_reroll = false;
 
 				console.log('determining sex');
-
 				return roll();
 			})();
 
-			var appearance = (function() {
-				var formulas = {
-					'human': {
-						height:   '3d6+60',
-						weight:   '6d20+100',
-						base_age: '1d8+15'
-					},
-					'ais\'lun': {
-						height:   '3d6+36',
-						weight:   '5d20+90',
-						base_age: '1d20+30'
-					},
-					'viantu': {
-						height:   '3d6+36',
-						weight:   '5d20+50',
-						base_age: '1d6+5'
-					},
-					'djenndan': {
-						height:   '3d6+84',
-						weight:   '6d20+280',
-						base_age: '1d8+12'
-					},
-					'kahlnissá': {
-						height:   '3d6+60',
-						weight:   '5d20+90',
-						base_age: '1d12+15'
-					},
-					'pulnagá': {
-						height:   '3d6+60',
-						weight:   '5d20+100',
-						base_age: '1d10+15'
-					}
-				};
-				var features = [
-					'Deep scar across left cheek',
-					'Birthmark in prominent location',
-					'Upturned nose',
-					'Cleft palate/cleft lip',
-					'Lazy eye',
-					'Pierced lip or stretched lip plate',
-					'Walks on edges or balls of feet',
-					'Extremely hirsute',
-					'Freckled skin/skin spots',
-					'Striking, patterned face paint',
-					'Dwarfism (adjust height/weight accordingly)',
-					'Excessive and/or intense blinking',
-					'Ocular heterochromia',
-					'Frequent habitual coughing',
-					'Mumbles and/or trails off at the end of speech',
-					'Deep pock marks in face and skin',
-					'Ragged scar diagonally across entire face',
-					'Always repeats the last word others speak',
-					'Cauliflower ear/torn ear',
-					'Very large hands',
-					'Symmetrical scars across both cheeks',
-					'Webbed fingers and/or toes',
-					'Abnormally tall (height +20 inches)',
-					'Speaks with an unusually low-pitched voice',
-					'Roll 2 features here (cumulative)',
-					'Speaks with an unusually high-pitched voice',
-					'Burn scars on face and/or shoulder',
-					'Extra digit on hands and/or feet',
-					'An asynchronous gait',
-					'Wide neck and/or sloped shoulders',
-					'Appears much older than actual age',
-					'Concave or sunken patch of skin',
-					'Dyed hair and/or fur',
-					'Missing several teeth',
-					'Geometric scarification on body and/or face',
-					'Blemished or bumpy skin',
-					'Pronounced overbite',
-					'Habitually sways back and forth',
-					'Incredibly small, rounded ears',
-					'Missing two fingers from right hand',
-					'Shaved eyebrows',
-					'Impeccable poise and/or clear-headedness',
-					'Very short arms and/or legs',
-					'Very long arms and/or legs',
-					'An odd, but not displeasing smell',
-					'Whip scars across back',
-					'One eye appears higher than the other',
-					'Cracks knuckles and/or neck frequently',
-					'Pronounced double chin',
-					'Remarkably indistinct (no distinguishing features)',
-					'Ritually tattooed body',
-					'Vitiligo',
-					'Missing two fingers from left hand',
-					'Darkened, raised moles on face and/or body',
-					'Shockingly narrow shoulders',
-					'Abnormally short (height -20 inches)',
-					'Four clearly visible scars from stab wounds',
-					'Deeply curved spine',
-					'Pronounced underbite',
-					'Shaved head',
-					'Ritual or symbolic branding on arms/legs',
-					'Deep scar across right cheek',
-					'Incredibly large, elongated ears',
-					'Pronounced albinism',
-					'Noticeably upright posture',
-					'Tall warts on face and neck',
-					'Stretched ear piercings',
-					'Nearly hairless with translucent skin',
-					'Clouded/scarred/damaged right eye',
-					'Burn scars on arms and/or body',
-					'A habit of staring',
-					'Large and/or bulbous nose',
-					'Very large, gapped teeth',
-					'Pointed, jutting chin',
-					'Roll 2 features here (cumulative)',
-					'Remarkably wide-set facial features',
-					'Pierced septum with elaborate jewelry',
-					'Patchy baldness',
-					'Stands in close proximity to others while talking',
-					'Split tongue',
-					'Mutters or vocalizes to self',
-					'Broken nose that healed in a misshapen way',
-					'Scars from an animal bite',
-					'Clouded/scarred/damaged left eye',
-					'Very small hands',
-					'Missing one ear',
-					'Multiple ear piercings (at least eight)',
-					'Nose frequently makes whistling sound',
-					'Noticeably dry, cracked, or scaly skin',
-					'Frequently squints and/or furrows brow',
-					'Teeth filed to points',
-					'Pierced nasal bridge',
-					'Unusual, strangely colored eyes',
-					'Ritually tattooed face',
-					'Matted or dreaded hair and/or fur',
-					'Beady eyes',
-					'Remarkably close-set facial features',
-					'Colored nails',
-					'Habitually touches head',
-					'Roll 3 features here (cumulative)'
-				];
+			// detailed appearance
+			(function() {
+				var features = data.characteristics.distinguishing_features;
+				var formulas = data.characteristics.race[instance.get('race')];
 				var changes = {
-					height:   instance._roll(formulas[instance.get('race')].height),
-					weight:   instance._roll(formulas[instance.get('race')].weight),
-					base_age: instance._roll(formulas[instance.get('race')].base_age),
+					height: instance._roll(formulas.height),
+					weight: instance._roll(formulas.weight),
+					base_age: instance._roll(formulas.base_age),
 					distinguishing_features: []
 				};
-				var feature_roll = function() {
+				var max_features = 1;
+				var roll = function() {
 					var result = instance._roll('1d100');
 					var feature = features[result - 1];
 
+					console.log('feature roll', result);
+
 					if (result === 75) {
-						feature_count += 2;
-						return feature_roll();
+						console.log('rolled 75');
+						max_features += 2;
+						return roll();
 					}
 
 					if (result === 100) {
-						feature_count += 3;
-						return feature_roll();
+						console.log('rolled 100');
+						max_features += 3;
+						return roll();
 					}
 
 					if (_.contains(changes['distinguishing_features'], feature)) {
-						return feature_roll();
+						return roll();
 					}
 
 					changes['distinguishing_features'].push(feature);
 
-					if (changes['distinguishing_features'].length < feature_count) {
-						return feature_roll();
+					if (changes['distinguishing_features'].length < max_features) {
+						return roll();
 					}
-				}
-				var feature_count = 1;
-
-				feature_roll();
+				};
 
 				console.log('determining appearance');
-
+				roll();
 				return instance.set(changes);
 			})();
 		})();
 
+		// step three: discover origins
+		(function() {
+			var changes = {};
+
+			console.log('discovering origins');
+
+			_.each(data.origins, function(options, origin) {
+				changes[origin] = options[instance._roll('1d' + options.length) - 1];
+			});
+
+			instance.set(changes);
+			// TODO Provincial Origins
+		})();
+
+		// TODO step 4
+		// TODO step 5
+		// TODO step 6
+		// TODO step 7
 	},
 
 	/**
@@ -298,6 +149,8 @@ var Character = Backbone.Model.extend({
 		var rolls = Dice.roll(formula);
 		var addition = parseInt(formula.split('+')[1]) || 0;
 		var sum = function(array) {return array.reduce((a, b) => a + b, 0)};
+
+		console.log('rolling ' + formula + ': ' + rolls.join(', '));
 
 		return sum(rolls) + addition;
 	},

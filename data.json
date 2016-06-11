@@ -1,0 +1,297 @@
+{
+
+	"attributes": [
+		"strength",
+		"endurance",
+		"agility",
+		"precision",
+		"intelligence",
+		"wisdom",
+		"perception",
+		"charisma"
+	],
+
+	"characteristics": {
+
+		"race" : {
+			"human": {
+				"height":   "3d6+60",
+				"weight":   "6d20+100",
+				"base_age": "1d8+15",
+				"attribute_adjustments": {
+					"strength": "-0",
+					"endurance": "-0",
+					"agility": "-0",
+					"precision": "-0",
+					"intelligence": "-0",
+					"wisdom": "-0",
+					"perception": "-0",
+					"charisma": "-0"
+				}
+			},
+			"ais'lun": {
+				"height":   "3d6+36",
+				"weight":   "5d20+90",
+				"base_age": "1d20+30",
+				"attribute_adjustments": {
+					"strength": "-0",
+					"endurance": "+2",
+					"agility": "-2",
+					"precision": "-0",
+					"intelligence": "-1",
+					"wisdom": "+1",
+					"perception": "+2",
+					"charisma": "-0"
+				}
+			},
+			"viantu": {
+				"height":   "3d6+36",
+				"weight":   "5d20+50",
+				"base_age": "1d6+5",
+				"attribute_adjustments": {
+					"strength": "-2",
+					"endurance": "-1",
+					"agility": "+2",
+					"precision": "+2",
+					"intelligence": "+1",
+					"wisdom": "-0",
+					"perception": "-0",
+					"charisma": "-0"
+				}
+			},
+			"djenndan": {
+				"height":   "3d6+84",
+				"weight":   "6d20+280",
+				"base_age": "1d8+12",
+				"attribute_adjustments": {
+					"strength": "+2",
+					"endurance": "+2",
+					"agility": "-1",
+					"precision": "-2",
+					"intelligence": "-0",
+					"wisdom": "-0",
+					"perception": "+1",
+					"charisma": "-0"
+				}
+			},
+			"kahlnissá": {
+				"height":   "3d6+60",
+				"weight":   "5d20+90",
+				"base_age": "1d12+15",
+				"attribute_adjustments": {
+					"strength": "-1",
+					"endurance": "-2",
+					"agility": "+2",
+					"precision": "-0",
+					"intelligence": "+2",
+					"wisdom": "-0",
+					"perception": "+1",
+					"charisma": "-0"
+				}
+			},
+			"pulnagá": {
+				"height":   "3d6+60",
+				"weight":   "5d20+100",
+				"base_age": "1d10+15",
+				"attribute_adjustments": {
+					"strength": "-0",
+					"endurance": "-0",
+					"agility": "+1",
+					"precision": "+1",
+					"intelligence": "+1",
+					"wisdom": "-1",
+					"perception": "-1",
+					"charisma": "-0"
+				}
+			}
+		},
+
+
+		"distinguishing_features": [
+			"Deep scar across left cheek",
+			"Birthmark in prominent location",
+			"Upturned nose",
+			"Cleft palate/cleft lip",
+			"Lazy eye",
+			"Pierced lip or stretched lip plate",
+			"Walks on edges or balls of feet",
+			"Extremely hirsute",
+			"Freckled skin/skin spots",
+			"Striking, patterned face paint",
+			"Dwarfism (adjust height/weight accordingly)",
+			"Excessive and/or intense blinking",
+			"Ocular heterochromia",
+			"Frequent habitual coughing",
+			"Mumbles and/or trails off at the end of speech",
+			"Deep pock marks in face and skin",
+			"Ragged scar diagonally across entire face",
+			"Always repeats the last word others speak",
+			"Cauliflower ear/torn ear",
+			"Very large hands",
+			"Symmetrical scars across both cheeks",
+			"Webbed fingers and/or toes",
+			"Abnormally tall (height +20 inches)",
+			"Speaks with an unusually low-pitched voice",
+			"Roll 2 features here (cumulative)",
+			"Speaks with an unusually high-pitched voice",
+			"Burn scars on face and/or shoulder",
+			"Extra digit on hands and/or feet",
+			"An asynchronous gait",
+			"Wide neck and/or sloped shoulders",
+			"Appears much older than actual age",
+			"Concave or sunken patch of skin",
+			"Dyed hair and/or fur",
+			"Missing several teeth",
+			"Geometric scarification on body and/or face",
+			"Blemished or bumpy skin",
+			"Pronounced overbite",
+			"Habitually sways back and forth",
+			"Incredibly small, rounded ears",
+			"Missing two fingers from right hand",
+			"Shaved eyebrows",
+			"Impeccable poise and/or clear-headedness",
+			"Very short arms and/or legs",
+			"Very long arms and/or legs",
+			"An odd, but not displeasing smell",
+			"Whip scars across back",
+			"One eye appears higher than the other",
+			"Cracks knuckles and/or neck frequently",
+			"Pronounced double chin",
+			"Remarkably indistinct (no distinguishing features)",
+			"Ritually tattooed body",
+			"Vitiligo",
+			"Missing two fingers from left hand",
+			"Darkened, raised moles on face and/or body",
+			"Shockingly narrow shoulders",
+			"Abnormally short (height -20 inches)",
+			"Four clearly visible scars from stab wounds",
+			"Deeply curved spine",
+			"Pronounced underbite",
+			"Shaved head",
+			"Ritual or symbolic branding on arms/legs",
+			"Deep scar across right cheek",
+			"Incredibly large, elongated ears",
+			"Pronounced albinism",
+			"Noticeably upright posture",
+			"Tall warts on face and neck",
+			"Stretched ear piercings",
+			"Nearly hairless with translucent skin",
+			"Clouded/scarred/damaged right eye",
+			"Burn scars on arms and/or body",
+			"A habit of staring",
+			"Large and/or bulbous nose",
+			"Very large, gapped teeth",
+			"Pointed, jutting chin",
+			"Roll 2 features here (cumulative)",
+			"Remarkably wide-set facial features",
+			"Pierced septum with elaborate jewelry",
+			"Patchy baldness",
+			"Stands in close proximity to others while talking",
+			"Split tongue",
+			"Mutters or vocalizes to self",
+			"Broken nose that healed in a misshapen way",
+			"Scars from an animal bite",
+			"Clouded/scarred/damaged left eye",
+			"Very small hands",
+			"Missing one ear",
+			"Multiple ear piercings (at least eight)",
+			"Nose frequently makes whistling sound",
+			"Noticeably dry, cracked, or scaly skin",
+			"Frequently squints and/or furrows brow",
+			"Teeth filed to points",
+			"Pierced nasal bridge",
+			"Unusual, strangely colored eyes",
+			"Ritually tattooed face",
+			"Matted or dreaded hair and/or fur",
+			"Beady eyes",
+			"Remarkably close-set facial features",
+			"Colored nails",
+			"Habitually touches head",
+			"Roll 3 features here (cumulative)"
+		]
+
+	},
+
+	"origins": {
+
+		"original_settlement": [
+			"Hamlet",
+			"Village",
+			"Small Town",
+			"Large Township",
+			"Small City",
+			"Large City"
+		],
+
+		"family_origins": [
+			"Single Parentage",
+			"Small Family",
+			"Parentage Unknown",
+			"From a Foster Family",
+			"Community Parentage",
+			"Large extended family"
+		],
+
+		"siblings": [
+			"No sibling(s)",
+			"One sibling",
+			"Two siblings",
+			"Three siblings",
+			"Four siblings",
+			"[d6] adoptive siblings",
+			"[d6] deceased siblings",
+			"[d6] estranged siblings"
+		],
+
+		"household": [
+			"Paupers and beggars",
+			"Laborers and farmers",
+			"Ringleaders and gangs",
+			"Artisans and makers",
+			"Luminaries and socialites",
+			"Intellectuals and scholars",
+			"Veterans and enforcers",
+			"Nobles and magnates"
+		],
+
+		"personal_reputation": [
+			"Hated and reviled among family or community",
+			"Mistrusted or feared among the local community",
+			"Was cast out or shunned from household or community",
+			"Was unnoticed or disregarded by community",
+			"Became lost or estranged from household or community",
+			"Was involved in a controversial and/or heroic event",
+			"Overworked or exploited by family or community",
+			"Wanted by local community authorities",
+			"Respected and well trusted among the local community",
+			"Loved and/or venerated among the local community"
+		],
+
+		"cultural_values_and_assumptions": [
+			"Wealth and prosperity",
+			"Generosity and charity",
+			"Religious piety and devotion",
+			"Knowledge and discovery",
+			"Discipline and training",
+			"Hospitality and community",
+			"Compassion and animal husbandry",
+			"Individuality and opportunism",
+			"Innovation and experimentation",
+			"Curiosity and exploration"
+		]
+
+	},
+
+	"profession_specialization_skills": {
+	},
+
+	"encounter_pale_stone": {
+	},
+
+	"outfit": {
+	},
+
+	"finalize_combat_effectiveness": {
+	}
+
+}

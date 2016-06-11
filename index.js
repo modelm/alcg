@@ -39,7 +39,40 @@ var Character = Backbone.Model.extend({
 
 				var result = instance._roll('1d6');
 
-				return instance.set('race', races[result - 1]);
+			})();
+
+			var racial_adjustments = (function() {
+				var formulas = { /* str   end   agi   pre   int   wis   per   cha */
+					'human':     [ '-0', '-0', '-0', '-0', '-0', '-0', '-0', '-0' ],
+					'ais\'lun':  [ '-0', '+2', '-2', '-0', '-1', '+1', '+2', '-0' ],
+					'viantu':    [ '-2', '-1', '+2', '+2', '+1', '-0', '-0', '-0' ],
+					'djenndan':  [ '+2', '+2', '-1', '-2', '-0', '-0', '+1', '-0' ],
+					'kahlnissá': [ '-1', '-2', '+2', '-0', '+2', '-0', '+1', '-0' ],
+					'pulnagá':   [ '-0', '-0', '+1', '+1', '+1', '-1', '-1', '-0' ]
+				};
+				var attributes = [
+					'strength',
+					'endurance',
+					'agility',
+					'precision',
+					'intelligence',
+					'wisdom',
+					'perception',
+					'charisma'
+				];
+				var changes = {};
+
+				_.each(attributes, function(attribute, key) {
+					var adjustment = formulas[instance.get('race')][key];
+
+					if ( adjustment !== '-0' ) {
+						changes[attribute] = eval(instance.get(attribute) + adjustment);
+					}
+				});
+
+				console.log('applying racial adjustments');
+
+				return instance.set(changes);
 			})();
 
 			var sex = (function() {

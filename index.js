@@ -77,8 +77,6 @@ var Character = Backbone.Model.extend({
 
 			// detailed appearance
 			(function() {
-				console.log('determining appearance');
-
 				var features = data.characteristics.distinguishing_features;
 				var formulas = data.characteristics.race[instance.get('race')];
 				var changes = {
@@ -87,22 +85,18 @@ var Character = Backbone.Model.extend({
 					base_age: instance._roll(formulas.base_age),
 					distinguishing_features: []
 				};
-				var max_features = 1;
+				var num_features = 1;
 				var roll = function() {
-					var result = instance._roll('1d100');
+					var result = instance._roll('1d' + features.length);
 					var feature = features[result - 1];
 
-					console.log('feature roll', result);
-
-					if (result === 75) {
-						console.log('rolled 75');
-						max_features += 2;
+					if (result === features.length * 3/4) {
+						num_features += (num_features === 1) ? 1 : 2;
 						return roll();
 					}
 
-					if (result === 100) {
-						console.log('rolled 100');
-						max_features += 3;
+					if (result === features.length) {
+						num_features += (num_features === 1) ? 2 : 3;
 						return roll();
 					}
 
@@ -112,11 +106,12 @@ var Character = Backbone.Model.extend({
 
 					changes['distinguishing_features'].push(feature);
 
-					if (changes['distinguishing_features'].length < max_features) {
+					if (changes['distinguishing_features'].length < num_features) {
 						return roll();
 					}
 				};
 
+				console.log('determining appearance');
 				roll();
 				return instance.set(changes);
 			})();

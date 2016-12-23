@@ -4,138 +4,148 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var Dice = require('dice');
 
-var Character = Backbone.Model.extend({
+var CharacterGenerator = Backbone.Model.extend({
 	initialize: function() {
 		var instance = this;
 
-		var data = JSON.parse(fs.readFileSync(__dirname + '/data.json'));
+		instance.data = JSON.parse(fs.readFileSync(__dirname + '/data.json'));
 
 		// step one: generate attributes
-		(function() {
-			var changes = {};
-
-			console.log('generating attributes');
-
-			_.each(data.attributes, function(attribute) {
-				changes[attribute] = instance._roll('3d6');
-			});
-
-			instance.set(changes);
-		})();
+		instance.generateAttributes();
 
 		// step two: determine characteristics
-		(function() {
-			// race
-			(function() {
-				var races = Object.keys(data.characteristics.race);
-				console.log('determining race');
-				instance.set({race: races[instance._roll('1d' + races.length) - 1]});
-			})();
-
-			// attribute adjustments
-			(function() {
-				var adjustments = data.characteristics.race[instance.get('race')].attribute_adjustments;
-				var callback = function(adjustment, attribute) {
-					changes[attribute] = eval(instance.get(attribute) + adjustment);
-				};
-				var changes = {};
-
-				console.log('applying racial attribute adjustments');
-				_.each(adjustments, callback);
-				return instance.set(changes);
-			})();
-
-			// sex
-			(function() {
-				var roll = function() {
-					var result = instance._roll('1d8');
-
-					if (_.contains([1, 3, 5], result)) {
-						return instance.set({sex: 'male'});
-					}
-
-					if (_.contains([2, 4, 6], result)) {
-						return instance.set({sex: 'female'});
-					}
-
-					if (_.contains([7, 8], result)) {
-						if (is_reroll) {
-							return instance.set({sex: 'intersex'});
-						} else {
-							is_reroll = true;
-							return roll();
-						}
-					}
-				};
-				var is_reroll = false;
-
-				console.log('determining sex');
-				return roll();
-			})();
-
-			// detailed appearance
-			(function() {
-				var features = data.characteristics.distinguishing_features;
-				var formulas = data.characteristics.race[instance.get('race')];
-				var changes = {
-					height: instance._roll(formulas.height),
-					weight: instance._roll(formulas.weight),
-					base_age: instance._roll(formulas.base_age),
-					distinguishing_features: []
-				};
-				var num_features = 1;
-				var roll = function() {
-					var result = instance._roll('1d' + features.length);
-					var feature = features[result - 1];
-
-					if (result === features.length * 3/4) {
-						num_features += (num_features === 1) ? 1 : 2;
-						return roll();
-					}
-
-					if (result === features.length) {
-						num_features += (num_features === 1) ? 2 : 3;
-						return roll();
-					}
-
-					if (_.contains(changes['distinguishing_features'], feature)) {
-						return roll();
-					}
-
-					changes['distinguishing_features'].push(feature);
-
-					if (changes['distinguishing_features'].length < num_features) {
-						return roll();
-					}
-				};
-				// TODO output log for determining height etc.
-				// TODO handle features that adjust other attributes, e.g. abnormally tall/short
-
-				console.log('determining appearance');
-				roll();
-				return instance.set(changes);
-			})();
-		})();
+		instance.determineCharacteristics();
 
 		// step three: discover origins
-		(function() {
-			var changes = {};
-
-			console.log('discovering origins');
-
-			_.each(data.origins, function(options, origin) {
-				changes[origin] = options[instance._roll('1d' + options.length) - 1];
-			});
-
-			instance.set(changes);
-			// TODO handle "[d6] adoptive siblings" etc.
-			// TODO Provincial Origins
-		})();
+		instance.discoverOrigins();
 
 		// TODO step 4
 		// TODO step 5
 		// TODO step 6
 		// TODO step 7
+	},
+
+	generateAttributes: function() {
+		var instance = this;
+		var changes = {};
+
+		console.log('generating attributes');
+
+		_.each(instance.data.attributes, function(attribute) {
+			changes[attribute] = instance._roll('3d6');
+		});
+
+		instance.set(changes);
+	},
+
+	determineCharacteristics: function() {
+		var instance = this;
+
+		// race
+		(function() {
+			var races = Object.keys(instance.data.characteristics.race);
+			console.log('determining race');
+			instance.set({race: races[instance._roll('1d' + races.length) - 1]});
+		})();
+
+		// attribute adjustments
+		(function() {
+			var adjustments = instance.data.characteristics.race[instance.get('race')].attribute_adjustments;
+			var callback = function(adjustment, attribute) {
+				changes[attribute] = eval(instance.get(attribute) + adjustment);
+			};
+			var changes = {};
+
+			console.log('applying racial attribute adjustments');
+			_.each(adjustments, callback);
+			return instance.set(changes);
+		})();
+
+		// sex
+		(function() {
+			var roll = function() {
+				var result = instance._roll('1d8');
+
+				if (_.contains([1, 3, 5], result)) {
+					return instance.set({sex: 'male'});
+				}
+
+				if (_.contains([2, 4, 6], result)) {
+					return instance.set({sex: 'female'});
+				}
+
+				if (_.contains([7, 8], result)) {
+					if (is_reroll) {
+						return instance.set({sex: 'intersex'});
+					} else {
+						is_reroll = true;
+						return roll();
+					}
+				}
+			};
+			var is_reroll = false;
+
+			console.log('determining sex');
+			return roll();
+		})();
+
+		// detailed appearance
+		(function() {
+			var features = instance.data.characteristics.distinguishing_features;
+			var formulas = instance.data.characteristics.race[instance.get('race')];
+			var changes = {
+				height: instance._roll(formulas.height),
+				weight: instance._roll(formulas.weight),
+				base_age: instance._roll(formulas.base_age),
+				distinguishing_features: []
+			};
+			var num_features = 1;
+			var roll = function() {
+				var result = instance._roll('1d' + features.length);
+				var feature = features[result - 1];
+
+				if (result === features.length * 3/4) {
+					num_features += (num_features === 1) ? 1 : 2;
+					return roll();
+				}
+
+				if (result === features.length) {
+					num_features += (num_features === 1) ? 2 : 3;
+					return roll();
+				}
+
+				if (_.contains(changes['distinguishing_features'], feature)) {
+					return roll();
+				}
+
+				changes['distinguishing_features'].push(feature);
+
+				if (changes['distinguishing_features'].length < num_features) {
+					return roll();
+				}
+			};
+			// TODO output log for determining height etc.
+			// TODO handle features that adjust other attributes, e.g. abnormally tall/short
+
+			console.log('determining appearance');
+			roll();
+			return instance.set(changes);
+		})();
+	},
+
+	discoverOrigins: function() {
+		var instance = this;
+		var changes = {};
+
+		console.log('discovering origins');
+
+		_.each(instance.data.origins, function(options, origin) {
+			changes[origin] = options[instance._roll('1d' + options.length) - 1];
+		});
+
+		instance.set(changes);
+		// TODO handle "[d6] adoptive siblings" etc.
+		// TODO Provincial Origins
 	},
 
 	/**

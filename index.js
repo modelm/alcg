@@ -36,9 +36,7 @@ var Character = Backbone.Model.extend({
 			(function() {
 				var adjustments = data.characteristics.race[instance.get('race')].attribute_adjustments;
 				var callback = function(adjustment, attribute) {
-					if ( adjustment !== '-0' ) {
-						changes[attribute] = eval(instance.get(attribute) + adjustment);
-					}
+					changes[attribute] = eval(instance.get(attribute) + adjustment);
 				};
 				var changes = {};
 
@@ -110,6 +108,8 @@ var Character = Backbone.Model.extend({
 						return roll();
 					}
 				};
+				// TODO output log for determining height etc.
+				// TODO handle features that adjust other attributes, e.g. abnormally tall/short
 
 				console.log('determining appearance');
 				roll();
@@ -128,6 +128,7 @@ var Character = Backbone.Model.extend({
 			});
 
 			instance.set(changes);
+			// TODO handle "[d6] adoptive siblings" etc.
 			// TODO Provincial Origins
 		})();
 

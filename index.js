@@ -196,7 +196,7 @@ http.createServer(function(req, res) {
 		return res.write(msg + "\n");
 	}
 
-	var c = new Character;
+	var c = new CharacterGenerator;
 
 	console.log('final stats');
 

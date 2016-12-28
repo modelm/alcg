@@ -20,8 +20,12 @@ var CharacterGenerator = Backbone.Model.extend({
 		instance.discoverOrigins();
 
 		// TODO step 4
-		// TODO step 5
+
+		// step five: enounter pale stone
+		instance.encounterPaleStone();
+
 		// TODO step 6
+
 		// TODO step 7
 	},
 
@@ -144,6 +148,29 @@ var CharacterGenerator = Backbone.Model.extend({
 		});
 
 		instance.set(changes);
+	},
+
+	encounterPaleStone: function() {
+		var instance = this;
+		var changes = {};
+
+		console.log('encountering pale stone');
+
+		_.each(instance.data.pale_stone, function(options, pale_stone) {
+			changes[pale_stone] = options[instance._roll('1d' + options.length) - 1];
+		});
+
+		instance.set(changes);
+
+		/* TODO
+		4D6 DICE RESULTS OUTCOME OF ENCOUNTER
+		All Different Your character survives their encounter, but Pale Stone is quite dangerous to them.
+		One Pair Your character has a deep connection to Pale Stone, and can harness its energy.
+		Three of a Kind Your character succumbs to painful skin welts, lesions, and internal bleeding. (Roll on the death chart)
+		Two Pairs Your character has an intrinsic bond with Pale Stone (+2 Base Capacity), and will no longer age.
+		All the Same Your character noticed, but did not make contact with Pale Stone, and they are now aware and attentive
+		of its existence (roll one additional Term, and then roll a second encounter noting all story points).
+		*/
 	},
 
 	/**

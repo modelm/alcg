@@ -261,18 +261,18 @@
 			["Wendajii", "Bwantaal, Thelean, Volaani, Brolean", "Savannah grasslands, rolling storm plains, grassy hills"],
 			["The Brolean Expanse", "Brolean, Thelean, Volaani, Bwantaal, Chenachua", "Temperate rainforests, woodlands, fen glades"],
 			["Hinn", "Delonian, Thelean, Kimenian, Volaani", "Deep forest riverlands, meadowlands, mossy shale valleys"],
-			["New Scorth High", "Es’ahn, Low Es’ahn, Thelean, Alldedan", "Craggy northlands, central farmlands, southern wetlands"],
-			["Weyell", "Thelean, Kimenian, High Es’ahn, Low Es’ahn", "Northern temperate hills, forest groves, lakelands"],
-			["Valadagal", "Thelean, Torlish, Alldedan, Es’ahn Cloudless hot", "deserts, lush southern dunes, clay fields"],
-			["Schelk (mainland)", "Lorosian, Thelean, Ardonic, Es’ahn", "Warm woodlands, overcast gardens, rice paddies"],
+			["New Scorth High", "Es'ahn, Low Es'ahn, Thelean, Alldedan", "Craggy northlands, central farmlands, southern wetlands"],
+			["Weyell", "Thelean, Kimenian, High Es'ahn, Low Es'ahn", "Northern temperate hills, forest groves, lakelands"],
+			["Valadagal", "Thelean, Torlish, Alldedan, Es'ahn Cloudless hot", "deserts, lush southern dunes, clay fields"],
+			["Schelk (mainland)", "Lorosian, Thelean, Ardonic, Es'ahn", "Warm woodlands, overcast gardens, rice paddies"],
 			["New Voland", "Volaani, Thelean, Brolean, Bwantaal", "Redwoods, hilly expanses, mild shrublands"],
-			["Djenndan Protectorate", "Alldedan, High Es’ahn, Thelean, Low Es’ahn", "Wide plains and foothills, temperate steppes, farmlands"],
+			["Djenndan Protectorate", "Alldedan, High Es'ahn, Thelean, Low Es'ahn", "Wide plains and foothills, temperate steppes, farmlands"],
 			["Bosen", "Elmecian, Thelean, Creonic, Alldedan", "Olive forests, nut groves, mild coastlands, balmy seas"],
 			["Siadagal", "Ardonic, Lorosian, Thelean, Creonic", "Lush farmlands, fields, rainy coasts, summer storms"],
 			["Creona", "Creonic, Thelean, Elmecian, Taluan", "Stormy woodlands, rocky coasts, lush river valleys"],
-			["Plenith", "Taluan, Creonic, Thelean, Es’ahn", "Tropical coasts and forests, rainforests, palm fields"],
+			["Plenith", "Taluan, Creonic, Thelean, Es'ahn", "Tropical coasts and forests, rainforests, palm fields"],
 			["Reviak", "Uskelian, Elmecian, Thelean, Volaani", "Steppes, flatlands, lightning stormlands, sandy plains"],
-			["Weyell", "Thelean, Creonic, Ardonic, Es’ahn", "Temperate wetlands, pine thrushes, swamps, mangroves"],
+			["Weyell", "Thelean, Creonic, Ardonic, Es'ahn", "Temperate wetlands, pine thrushes, swamps, mangroves"],
 			["Hinn", "Delonian, Thelean, Kimenian, Volaani", "Coastal wetlands, southern flatlands, eastern borderlands"],
 			["Schelk (islander)", "Elmecian, Lorosian, Thelean, Ardonic", "Warm islands, volcanic crags, coral reefs, sandy beaches"],
 			["Bosen", "Alldedan, Thelean, Elmecian, Creonic", "Rocky central highlands, river valleys, terraced vine fields"],
@@ -284,7 +284,44 @@
 	"profession_specialization_skills": {
 	},
 
-	"encounter_pale_stone": {
+	"pale_stone": {
+
+		"description_of_pale_stone": [
+			"A fist-sized shard, translucent and radiant",
+			"Several small, pebble-sized, mysterious stones",
+			"A cluster of glowing, radiant crystals thin as twigs",
+			"A carved, radiant trinket joined to metal or bone",
+			"A flat, rough, disc-like shard with a pale green hue",
+			"An eight-pointed \"singing stone,\" a strange audible glow"
+		],
+
+		"encounter_locale": [
+			"Encountered near or within hometown",
+			"Discovered along a road far outside a settlement",
+			"Encountered inside a nearby settlement",
+			"Found near the outskirts of a strange ruin",
+			"Discovered in a body of water, deep under the surface",
+			"Found within the wilderness in the trunk of a tree"
+		],
+
+		"shared_exposure": [
+			"You were completely alone for the encounter",
+			"An unknown party witnessed your encounter",
+			"Your encounter causes fear among locals",
+			"Your encounter garners the attention of authorities",
+			"Your encounter inspires fame or infamy regionally",
+			"You were completely alone for the encounter"
+		],
+
+		"impact_of_encounter": [
+			"Anyone who shares your exposure shares in your outcome",
+			"Visions of subterranean locales momentarily haunt your psyche",
+			"For just a moment you are aware of other Pale Stone nearby",
+			"Your encounter shatters the Pale Stone into fragments",
+			"You close your eyes and strangely appear miles from home",
+			"Anyone who shares your exposure shares in your outcome"
+		]
+
 	},
 
 	"outfit": {

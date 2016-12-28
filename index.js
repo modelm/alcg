@@ -144,7 +144,6 @@ var CharacterGenerator = Backbone.Model.extend({
 		});
 
 		instance.set(changes);
-		// TODO Provincial Origins
 	},
 
 	/**

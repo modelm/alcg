@@ -144,15 +144,19 @@ var CharacterGenerator = Backbone.Model.extend({
 		});
 
 		instance.set(changes);
-		// TODO handle "[d6] adoptive siblings" etc.
 		// TODO Provincial Origins
 	},
 
 	/**
-	 * like Dice.roll except returns sum of rolls and also handles adding to the sum e.g. '2d6+10'
-	 * NOTE if you only want one die, you MUST start the formula with '1' e.g. '1d6' - otherwise Dice.roll assumes 2 dice
+	 * like Dice.roll except:
+	 * - defaults to 1 die rather than 2 dice when formula begins with 'd'
+	 * - handles adding to the sum e.g. '2d6+10'
+	 * - returns sum of rolls
 	 */
 	_roll: function(formula) {
+		// Dice.roll defaults to two dice unless we specify otherwise
+		formula = formula.replace(/^d/, '1d');
+
 		var rolls = Dice.roll(formula);
 		var addition = parseInt(formula.split('+')[1]) || 0;
 		var sum = function(array) {return array.reduce((a, b) => a + b, 0)};
@@ -163,6 +167,20 @@ var CharacterGenerator = Backbone.Model.extend({
 	},
 
 	set: function(attributes, options) {
+		var instance = this;
+
+		// handle values containing embedded rolls e.g. "[d6] adoptive siblings"
+		_.each(attributes, function(attribute, key) {
+			if (typeof attribute === 'string') {
+				var d_regex = /\[([0-9]*d[0-9]+)\]/;
+				var d_match = attribute.match(d_regex);
+
+				if (d_match) {
+					attributes[key] = attribute.replace(d_regex, instance._roll(d_match[1]));
+				}
+			}
+		});
+
 		console.log(attributes);
 
 		return Backbone.Model.prototype.set.call(this, attributes, options);

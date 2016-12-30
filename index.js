@@ -153,24 +153,47 @@ var CharacterGenerator = Backbone.Model.extend({
 	encounterPaleStone: function() {
 		var instance = this;
 		var changes = {};
+		var outcome_key = 'outcome_of_encounter';
+		var results = [];
+		var counts = [];
 
 		console.log('encountering pale stone');
 
+		// first roll for description, locale, exposure, and impact
 		_.each(instance.data.pale_stone, function(options, pale_stone) {
-			changes[pale_stone] = options[instance._roll('1d' + options.length) - 1];
+			var result = instance._roll('d' + options.length) - 1;
+			changes[pale_stone] = options[result];
+			results.push(result);
 		});
 
-		instance.set(changes);
+		// then determine outcome based on previous rolls
+		_.each(results, function(i, result) {
+			counts[i] = counts[i] ? counts[i] + 1 : 1;
+		});
 
-		/* TODO
-		4D6 DICE RESULTS OUTCOME OF ENCOUNTER
-		All Different Your character survives their encounter, but Pale Stone is quite dangerous to them.
-		One Pair Your character has a deep connection to Pale Stone, and can harness its energy.
-		Three of a Kind Your character succumbs to painful skin welts, lesions, and internal bleeding. (Roll on the death chart)
-		Two Pairs Your character has an intrinsic bond with Pale Stone (+2 Base Capacity), and will no longer age.
-		All the Same Your character noticed, but did not make contact with Pale Stone, and they are now aware and attentive
-		of its existence (roll one additional Term, and then roll a second encounter noting all story points).
-		*/
+		// remove null elements
+		counts = counts.filter(function(n){ return n != undefined }); 
+
+		// all different
+		if ((new Set(results)).size === results.length) {
+			changes[outcome_key] = 'Your character survives their encounter, but Pale Stone is quite dangerous to them.';
+		// all the same
+		} else if (counts.length === 1) {
+			changes[outcome_key] = 'Your character noticed, but did not make contact with Pale Stone, and they are now aware and attentive of its existence (roll one additional Term, and then roll a second encounter noting all story points)';
+		// three of a kind
+		} else if (_.contains(counts, 3)) {
+			// TODO die
+			changes[outcome_key] = 'Your character succumbs to painful skin welts, lesions, and internal bleeding. (Roll on the death chart)';
+		// one pair
+		} else if (_.contains(counts, 2) && counts.length === 3) {
+			changes[outcome_key] = 'Your character has a deep connection to Pale Stone, and can harness its energy.';
+		// two pair
+		} else if (_.contains(counts, 2) && counts.length === 2) {
+			// TODO adjust capacity
+			changes[outcome_key] = 'Your character has an intrinsic bond with Pale Stone (+2 Base Capacity), and will no longer age.';
+		}
+
+		instance.set(changes);
 	},
 
 	/**

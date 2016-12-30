@@ -49,7 +49,7 @@ var CharacterGenerator = Backbone.Model.extend({
 		(function() {
 			var races = Object.keys(instance.data.characteristics.race);
 			console.log('determining race');
-			instance.set({race: races[instance._roll('1d' + races.length) - 1]});
+			instance.set({race: races[instance._roll('d' + races.length) - 1]});
 		})();
 
 		// attribute adjustments
@@ -68,7 +68,7 @@ var CharacterGenerator = Backbone.Model.extend({
 		// sex
 		(function() {
 			var roll = function() {
-				var result = instance._roll('1d8');
+				var result = instance._roll('d8');
 
 				if (_.contains([1, 3, 5], result)) {
 					return instance.set({sex: 'male'});
@@ -105,7 +105,7 @@ var CharacterGenerator = Backbone.Model.extend({
 			};
 			var num_features = 1;
 			var roll = function() {
-				var result = instance._roll('1d' + features.length);
+				var result = instance._roll('d' + features.length);
 				var feature = features[result - 1];
 
 				if (result === features.length * 3/4) {
@@ -144,7 +144,7 @@ var CharacterGenerator = Backbone.Model.extend({
 		console.log('discovering origins');
 
 		_.each(instance.data.origins, function(options, origin) {
-			changes[origin] = options[instance._roll('1d' + options.length) - 1];
+			changes[origin] = options[instance._roll('d' + options.length) - 1];
 		});
 
 		instance.set(changes);
@@ -213,7 +213,7 @@ var CharacterGenerator = Backbone.Model.extend({
 	}
 });
 
-//console.log(new Character);
+//console.log(new CharacterGenerator);
 
 http.createServer(function(req, res) {
 	console.log = function(msg) {

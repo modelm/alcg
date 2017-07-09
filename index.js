@@ -176,21 +176,21 @@ var CharacterGenerator = Backbone.Model.extend({
 
 		// all different
 		if ((new Set(results)).size === results.length) {
-			changes[outcome_key] = 'Your character survives their encounter, but Pale Stone is quite dangerous to them.';
+			changes[outcome_key] = 'Your character’s encounter was painful, haunting, and traumatic (-2 Debility Resistance)';
 		// all the same
 		} else if (counts.length === 1) {
-			changes[outcome_key] = 'Your character noticed, but did not make contact with Pale Stone, and they are now aware and attentive of its existence (roll one additional Term, and then roll a second encounter noting all story points)';
+			changes[outcome_key] = 'Your character discovers an intrinsic bond with Pale Stone (+2 healing, character never ages).';
 		// three of a kind
 		} else if (_.contains(counts, 3)) {
 			// TODO die
-			changes[outcome_key] = 'Your character succumbs to painful skin welts, lesions, and internal bleeding. (Roll on the death chart)';
+			changes[outcome_key] = 'Your character’s exposure causes painful lesions, internal bleeding, then death. (Roll death chart)';
 		// one pair
 		} else if (_.contains(counts, 2) && counts.length === 3) {
-			changes[outcome_key] = 'Your character has a deep connection to Pale Stone, and can harness its energy.';
+			changes[outcome_key] = 'Your character discovers a deep connection to Pale Stone, and can harness its energy. (+1 healing)';
 		// two pair
 		} else if (_.contains(counts, 2) && counts.length === 2) {
 			// TODO adjust capacity
-			changes[outcome_key] = 'Your character has an intrinsic bond with Pale Stone (+2 Base Capacity), and will no longer age.';
+			changes[outcome_key] = 'Your character discovers an affinity for Pale Stone, and can harness its energy. (+2 healing)';
 		}
 
 		instance.set(changes);
